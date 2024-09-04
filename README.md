@@ -27,7 +27,11 @@ walletwatch/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── models.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   └── expense.py
+│   ├── forms.py
 │   ├── routes.py
 │   └── templates/
 │       ├── base.html

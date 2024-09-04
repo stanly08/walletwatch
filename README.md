@@ -25,19 +25,18 @@ AWS or DigitalOcean: For more customizable hosting options.
 ```
 walletwatch/
 │
-├── app.py				#main flask app
-├── templates/				#html templates
-│   ├── base.html
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   └── dashboard.html
-├── static/				#css styles
-│   ├── css/
-│   │   └── styles.css
-│   └── js/				#javascript files
-│       └── scripts.js
-├── models.py				#database models
-├── forms.py				#form validation
-└── walletwatch.db			#SQLite or SQLAlchemy database
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   └── templates/
+│       ├── base.html
+│       ├── dashboard.html
+│       └── login.html
+│
+├── walletwatch.db
+├── requirements.txt
+├── run.py
+└── .gitignore
+
 

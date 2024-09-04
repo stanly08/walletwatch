@@ -39,5 +39,5 @@ walletwatch/
 │       └── scripts.js
 ├── models.py				#database models
 ├── forms.py				#form validation
-└── expense_tracker.db			#SQLite or SQLAlchemy database
+└── walletwatch.db			#SQLite or SQLAlchemy database
 

@@ -1,63 +1,96 @@
 from flask import render_template, redirect, url_for, flash, request
-from .models import db, User, Expense
-from .forms import LoginForm, SignupForm
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
-from . import login_manager
+from app import db  # Import db from app/__init__.py
+from app.models import User, Expense  # Import models from models/__init__.py
+from app.forms import LoginForm, SignupForm, ExpenseForm
+from flask import Blueprint
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+# Define the main blueprint
+main = Blueprint('main', __name__)
 
-@app.route('/')
-def index():
-    return redirect(url_for('dashboard'))
-
-@app.route('/dashboard')
+# Route for the dashboard
+@main.route('/dashboard')
 @login_required
 def dashboard():
+    # Fetch the expenses for the logged-in user
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', expenses=expenses)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and check_password_hash(user.password, form.password.data):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Login failed. Check your username and password.')
-    return render_template('login.html', form=form)
-
-@app.route('/signup', methods=['GET', 'POST'])
+# Route for user signup
+@main.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        # Create a new user
+        new_user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        flash('Account created successfully!')
-        return redirect(url_for('login'))
+        flash('Account created successfully! You can now log in.', 'success')
+        return redirect(url_for('main.login'))
     return render_template('signup.html', form=form)
 
-@app.route('/logout')
+# Route for user login
+@main.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Check if the user exists and the password is correct
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and user.password == form.password.data:
+            login_user(user)
+            flash('Logged in successfully.', 'success')
+            return redirect(url_for('main.dashboard'))
+        else:
+            flash('Login failed. Please check your email and password.', 'danger')
+    return render_template('login.html', form=form)
+
+# Route for user logout
+@main.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('main.login'))
 
-@app.route('/add_expense', methods=['POST'])
+# Route for adding an expense
+@main.route('/add-expense', methods=['GET', 'POST'])
 @login_required
 def add_expense():
-    date = request.form['date']
-    description = request.form['description']
-    amount = request.form['amount']
-    category = request.form['category']
-    new_expense = Expense(date=date, description=description, amount=amount, category=category, user_id=current_user.id)
-    db.session.add(new_expense)
-    db.session.commit()
-    return redirect(url_for('dashboard'))
+    form = ExpenseForm()
+    if form.validate_on_submit():
+        # Create a new expense
+        new_expense = Expense(date=form.date.data, description=form.description.data, 
+                              amount=form.amount.data, category=form.category.data, 
+                              user_id=current_user.id)
+        db.session.add(new_expense)
+        db.session.commit()
+        flash('Expense added successfully.', 'success')
+        return redirect(url_for('main.dashboard'))
+    return render_template('add_expense.html', form=form)
 
+# Route for editing an expense
+@main.route('/edit-expense/<int:expense_id>', methods=['GET', 'POST'])
+@login_required
+def edit_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+    form = ExpenseForm(obj=expense)
+    if form.validate_on_submit():
+        # Update the expense
+        expense.date = form.date.data
+        expense.description = form.description.data
+        expense.amount = form.amount.data
+        expense.category = form.category.data
+        db.session.commit()
+        flash('Expense updated successfully.', 'success')
+        return redirect(url_for('main.dashboard'))
+    return render_template('edit_expense.html', form=form, expense=expense)
+
+# Route for deleting an expense
+@main.route('/delete-expense/<int:expense_id>', methods=['POST'])
+@login_required
+def delete_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+    db.session.delete(expense)
+    db.session.commit()
+    flash('Expense deleted successfully.', 'success')
+    return redirect(url_for('main.dashboard'))

@@ -16,7 +16,7 @@ class SignupForm(FlaskForm):
         if user:
             raise ValidationError('Sorry! Looks like the email is already taken! Please try another one.')
 
-     def validate_username(self, username):
+    def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
@@ -47,4 +47,6 @@ class ExpenseForm(FlaskForm):
     def validate_description(self, description):
         if 'miscellaneous' in description.data.lower():
             raise ValidationError('Please provide a more specific description.')
+
+
 

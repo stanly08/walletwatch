@@ -1,4 +1,4 @@
-from .. import db
+from app import db  # Import db from app/__init__.py
 
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -7,4 +7,5 @@ class Expense(db.Model):
     amount = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 

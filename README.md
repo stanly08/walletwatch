@@ -38,9 +38,16 @@ walletwatch/
 │       ├── dashboard.html
 │       └── login.html
 │
+├── tests/
+│   ├── __init__.py
+│   ├── test_routes.py
+│   ├── test_models.py
+│   └── test_forms.py
+│
 ├── walletwatch.db
 ├── requirements.txt
 ├── run.py
 └── .gitignore
+
 
 

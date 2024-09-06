@@ -28,19 +28,28 @@ class FormsTestCase(unittest.TestCase):
             self.assertIn('Field must be at least 8 characters long.', form.password.errors)
             self.assertIn('Field must be equal to confirm_password.', form.confirm_password.errors)
 
+    # Test for valid ExpenseForm
+    def test_valid_expense_form(self):
+        # Create a test request context
+        with self.app.test_request_context():
+            form = ExpenseForm(amount=100, category='Groceries', description='Weekly groceries', date=date.today())
+            self.assertTrue(form.validate())  # Ensure that form validation passes
 
     def test_invalid_expense_form(self):
-        form = ExpenseForm(amount='abc', category='', description='', date=None)
-        self.assertFalse(form.validate())
+        # Create a test request context
+        with self.app.test_request_context():
+            form = ExpenseForm(amount=-10, category='', description='miscellaneous', date=date.today())
+            self.assertFalse(form.validate())  # Ensure that form validation fails
+            self.assertIn('The expense amount must be greater than zero.', form.amount.errors)
+            self.assertIn('This field is required.', form.category.errors)
+            self.assertIn('Please provide a more specific description.', form.description.errors)
 
-
-    def test_valid_expense_form(self):
-        form = ExpenseForm(amount=1500.00, category='Network', description='Wifi payment', date=datetime.utcnow())
-        self.assertTrue(form.validate())
-
+    # Test for valid RegistrationForm
     def test_valid_registration_form(self):
-        form = RegistrationForm(username='testuser', email='test@example.com', password='Password1!', confirm_password='Password1!')
-        self.assertTrue(form.validate())
+        # Create a test request context
+        with self.app.test_request_context():
+            form = RegistrationForm(username='testuser', email='test@example.com', password='password123', confirm_password='password123')
+            self.assertTrue(form.validate())  # Ensure that form validation passes
 
 if __name__ == '__main__':
     unittest.main()

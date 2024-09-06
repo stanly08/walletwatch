@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FloatField, SelectField, DateField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
+from datetime import date
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)])
@@ -44,12 +45,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
+
 class ExpenseForm(FlaskForm):
-    date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d')
+    amount = DecimalField('Amount', validators=[DataRequired(), NumberRange(min=0.01)])
+    category = StringField('Category', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired(), Length(max=200)])
-    amount = FloatField('Amount', validators=[DataRequired()])
-    category = SelectField('Category', choices=[('Food', 'Food'), ('Transport', 'Transport'), ('Shopping', 'Shopping'), ('Rent', 'Rent'), ('Other', 'Other')], validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d')
     submit = SubmitField('Save Expense')
+
 
     # Custom validation for the expense amount
     def validate_amount(self, amount):

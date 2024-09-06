@@ -1,6 +1,8 @@
 import unittest
 from app import create_app, db
 from app.forms import RegistrationForm, ExpenseForm
+from datetime import date
+
 
 class FormsTestCase(unittest.TestCase):
     def setUp(self):
@@ -26,7 +28,7 @@ class FormsTestCase(unittest.TestCase):
             self.assertFalse(form.validate())  # Ensure that form validation fails
             self.assertIn('Invalid email address.', form.email.errors)
             self.assertIn('Field must be at least 8 characters long.', form.password.errors)
-            self.assertIn('Field must be equal to confirm_password.', form.confirm_password.errors)
+            self.assertIn('Field must be equal to password.', form.confirm_password.errors)
 
     # Test for valid ExpenseForm
     def test_valid_expense_form(self):

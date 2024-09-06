@@ -21,12 +21,11 @@ def upgrade():
     )
     
     # Create the `expense` table
-    op.create_table(
-        'expense',
+    op.create_table('expense',
         sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('date', sa.Date(), nullable=False),  # Changed to sa.Date()
+        sa.Column('date', sa.String(length=10), nullable=False),
         sa.Column('description', sa.String(length=200), nullable=False),
-        sa.Column('amount', sa.Numeric(10, 2), nullable=False),  # Changed to sa.Numeric(10, 2)
+        sa.Column('amount', sa.Float(), nullable=False),
         sa.Column('category', sa.String(length=50), nullable=False),
         sa.Column('user_id', sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(['user_id'], ['user.id']),

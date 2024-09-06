@@ -22,7 +22,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
 
 class SignupForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)]])
+    username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])

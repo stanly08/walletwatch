@@ -1,5 +1,5 @@
 import unittest
-from app import create_app
+from app import create_app, db
 from app.forms import RegistrationForm, ExpenseForm
 
 class FormsTestCase(unittest.TestCase):

@@ -12,12 +12,12 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = 'login'  # Update if necessary
+    login_manager.login_view = 'main.login'
 
     from app.routes import main
     app.register_blueprint(main)
 
-    from app.models.user import User  # Import here to avoid circular import
+    from app.models.user import User
 
     @login_manager.user_loader
     def load_user(user_id):

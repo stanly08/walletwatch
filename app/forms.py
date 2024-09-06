@@ -21,6 +21,24 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
 
+class SignupForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)]])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+
+    # Custom validation to check if the email is already in use
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Sorry! Looks like the email is already taken! Please try another one.')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])

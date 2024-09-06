@@ -8,6 +8,11 @@ from flask import Blueprint
 # Define the main blueprint
 main = Blueprint('main', __name__)
 
+# Route for the home page
+@main.route('/')
+def home():
+    return render_template('index.html')
+
 # Route for the dashboard
 @main.route('/dashboard')
 @login_required

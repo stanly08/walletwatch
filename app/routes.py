@@ -26,8 +26,15 @@ def dashboard():
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
+        # Check if the username or email already exists
+        existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
+        if existing_user:
+            flash('Username or email already exists. Please choose a different one.', 'warning')
+            return redirect(url_for('main.signup'))
+        
         # Create a new user
-        new_user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         flash('Account created successfully! You can now log in.', 'success')
@@ -41,7 +48,7 @@ def login():
     if form.validate_on_submit():
         # Check if the user exists and the password is correct
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.password == form.password.data:
+        if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('Logged in successfully.', 'success')
             return redirect(url_for('main.dashboard'))
@@ -99,3 +106,4 @@ def delete_expense(expense_id):
     db.session.commit()
     flash('Expense deleted successfully.', 'success')
     return redirect(url_for('main.dashboard'))
+

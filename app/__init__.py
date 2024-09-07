@@ -38,6 +38,10 @@ def create_app():
         def load_user(user_id):
             return User.query.get(int(user_id))
 
+        # Create all tables
+        with app.app_context():
+            db.create_all()
+
         logger.info('Application initialized successfully.')
 
     except Exception as e:

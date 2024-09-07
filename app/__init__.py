@@ -42,6 +42,9 @@ def create_app():
         with app.app_context():
             db.create_all()
 
+        # Check if tables exist
+            print(db.engine.table_names())
+
         logger.info('Application initialized successfully.')
 
     except Exception as e:

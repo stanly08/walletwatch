@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from config import Config
 from flask_wtf import CSRFProtect  # Import CSRFProtect
+from sqlalchemy import inspect  # Import inspect for table inspection
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -42,8 +43,10 @@ def create_app():
         with app.app_context():
             db.create_all()
 
-        # Check if tables exist
-            print(db.engine.table_names())
+            # Check if tables exist
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
+            print(f'Tables in the database: {tables}')
 
         logger.info('Application initialized successfully.')
 
@@ -52,4 +55,5 @@ def create_app():
         raise  # Re-raise the exception to ensure the app does not start if there is a critical error
 
     return app
+
 

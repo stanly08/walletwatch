@@ -21,7 +21,7 @@ def dashboard():
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', expenses=expenses)
 
-@app.route('/signup', methods=['GET', 'POST'])
+@main.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():

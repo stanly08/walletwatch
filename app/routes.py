@@ -21,8 +21,7 @@ def dashboard():
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', expenses=expenses)
 
-# Route for user signup
-@main.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
@@ -30,17 +29,25 @@ def signup():
         existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
         if existing_user:
             flash('Username or email already exists. Please choose a different one.', 'warning')
-            return redirect(url_for('main.signup'))
-        
-        # Create a new user
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('Account created successfully! You can now log in.', 'success')
-        return redirect(url_for('main.login'))
-    return render_template('signup.html', form=form)
+            return redirect(url_for('signup'))  # Redirect to signup page if user exists
 
+        # Hash the user's password
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+
+        # Create a new user with the hashed password
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        try:
+            # Add the user to the database
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Signup successful! You can now log in.', 'success')
+            return redirect(url_for('login'))  # Redirect to login page after successful signup
+        except Exception as e:
+            db.session.rollback()
+            flash('Error during signup. Please try again.', 'danger')
+            print(f"Error: {e}")  # Log the error for debugging
+    return render_template('signup.html', form=form)
+    
 # Route for user login
 @main.route('/login', methods=['GET', 'POST'])
 def login():

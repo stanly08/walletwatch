@@ -4,8 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from config import Config
-from flask_wtf import CSRFProtect  # Import CSRFProtect
-from sqlalchemy import inspect  # Import inspect for table inspection
+from flask_wtf import CSRFProtect
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -15,6 +14,10 @@ csrf = CSRFProtect()  # Initialize CSRFProtect
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    # Configure database connection details
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, recommended for performance
 
     # Set up logging
     logging.basicConfig(level=logging.INFO)
@@ -26,27 +29,22 @@ def create_app():
         migrate.init_app(app, db)
         login_manager.init_app(app)
         login_manager.login_view = 'main.login'
-        csrf.init_app(app)  # Initialize CSRF protection with the app
+        csrf.init_app(app)  # Initialize CSRF protection after app creation
 
         # Register blueprints
         from app.routes import main
         app.register_blueprint(main)
 
         # Import models after app is initialized
-        from app.models.user import User
+        from app.models import User
 
         @login_manager.user_loader
         def load_user(user_id):
             return User.query.get(int(user_id))
 
-        # Create all tables
-        with app.app_context():
-            db.create_all()
-
-            # Check if tables exist
-            inspector = inspect(db.engine)
-            tables = inspector.get_table_names()
-            print(f'Tables in the database: {tables}')
+        # Create all tables (optional, uncomment if needed)
+        # with app.app_context():
+        #     db.create_all()
 
         logger.info('Application initialized successfully.')
 

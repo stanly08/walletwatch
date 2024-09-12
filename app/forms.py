@@ -13,38 +13,13 @@ class RegistrationForm(FlaskForm):
 
     # Custom validation to check if the email is already in use
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
+        if not User.is_email_available(email.data):
             raise ValidationError('Sorry! Looks like the email is already taken! Please try another one.')
 
+    # Custom validation to check if the username is already in use
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
+        if not User.is_username_available(username.data):
             raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
-
-class SignupForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-    # Custom validation to check if the email is already in use
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError('Sorry! Looks like the email is already taken! Please try another one.')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError("Sorry! Looks like the username is already taken! Please try another one.")
-
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log In')
-
 
 class ExpenseForm(FlaskForm):
     amount = DecimalField('Amount', validators=[DataRequired(), NumberRange(min=0.01)])
@@ -52,7 +27,6 @@ class ExpenseForm(FlaskForm):
     description = StringField('Description', validators=[DataRequired(), Length(max=200)])
     date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d')
     submit = SubmitField('Save Expense')
-
 
     # Custom validation for the expense amount
     def validate_amount(self, amount):
@@ -68,6 +42,18 @@ class ExpenseForm(FlaskForm):
     def validate_description(self, description):
         if 'miscellaneous' in description.data.lower():
             raise ValidationError('Please provide a more specific description.')
+
+# Add the custom validation methods to the User model
+class User(db.Model):
+    # ... other model fields
+
+    @staticmethod
+    def is_email_available(email):
+        return not User.query.filter_by(email=email).first()
+
+    @staticmethod
+    def is_username_available(username):
+        return not User.query.filter_by(username=username).first()
 
 
 

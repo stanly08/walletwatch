@@ -16,7 +16,7 @@ def create_app():
     app.config.from_object(Config)
 
     # Configure database connection details
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(BASE_DIR, "../instance/database.db")}'     
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///database.db'     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, recommended for performance
 
     # Set up logging

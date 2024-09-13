@@ -1,9 +1,9 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from app import db  # Import db from app/__init__.py
 from app.models import User, Expense  # Import models from models/__init__.py
 from app.forms import LoginForm, RegistrationForm, ExpenseForm  # Update the import here
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint
 
 # Define the main blueprint
@@ -24,7 +24,7 @@ def dashboard():
 
 @main.route('/signup', methods=['GET', 'POST'])
 def signup():
-    form = RegistrationForm()  # Update the form to RegistrationForm
+    form = RegistrationForm()  # Use RegistrationForm for signup
     if form.validate_on_submit():
         # Check if the username or email already exists
         existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()

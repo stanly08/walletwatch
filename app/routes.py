@@ -26,38 +26,47 @@ def dashboard():
 def signup():
     form = RegistrationForm()
     
-    if form.validate_on_submit():
-        print("Form validation successful!")
-
-        # Check if the username or email already exists
-        existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
+    if request.method == 'POST':
+        # Check the form data being submitted
+        print("Form data submitted:", request.form)
         
-        if existing_user:
-            flash('Username or email already exists. Please choose a different one.', 'warning')
-            print("User exists, redirecting to signup.")
-            return redirect(url_for('main.signup'))
+        # Check if the form validates
+        if form.validate():
+            print("Form validation successful!")
+            
+            # Check if the username or email already exists
+            existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
+            
+            if existing_user:
+                flash('Username or email already exists. Please choose a different one.', 'warning')
+                print("User exists, redirecting to signup.")
+                return redirect(url_for('main.signup'))
 
-        # Hash the user's password
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
+            # Hash the user's password
+            hashed_password = generate_password_hash(form.password.data, method='sha256')
 
-        # Create a new user with the hashed password
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            # Create a new user with the hashed password
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
 
-        try:
-            # Add the user to the database
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Signup successful! You can now log in.', 'success')
-            print("User added successfully, redirecting to login.")
-            return redirect(url_for('main.login'))  # Redirect to login page after successful signup
-        except Exception as e:
-            db.session.rollback()
-            flash('Error during signup. Please try again.', 'danger')
-            print(f"Error during database transaction: {e}")
-
-    print("Form validation failed or GET request.")
+            try:
+                # Add the user to the database
+                db.session.add(new_user)
+                db.session.commit()
+                flash('Signup successful! You can now log in.', 'success')
+                print("User added successfully, redirecting to login.")
+                return redirect(url_for('main.login'))  # Redirect to login page after successful signup
+            except Exception as e:
+                db.session.rollback()
+                flash('Error during signup. Please try again.', 'danger')
+                print(f"Error during database transaction: {e}")
+        else:
+            # Print form validation errors
+            print("Form validation failed.")
+            print("Form errors:", form.errors)
+    
+    # Handle GET request or failed validation
+    print("Form validation failed")
     return render_template('signup.html', form=form)
-
     
 # Route for user login
 @main.route('/login', methods=['GET', 'POST'])

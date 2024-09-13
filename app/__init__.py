@@ -14,11 +14,6 @@ csrf = CSRFProtect()  # Initialize CSRFProtect
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    # Configure database connection details
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///database.db'     
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, recommended for performance
-
     # Set up logging
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)

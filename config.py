@@ -6,7 +6,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or m_key
 
     # SQLite database URI pointing to instance/database.db
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.getcwd(), 'instance', 'database.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
 
     # Disable modification tracking for performance
     SQLALCHEMY_TRACK_MODIFICATIONS = False

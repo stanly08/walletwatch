@@ -2,7 +2,8 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from app import db  # Import db from app/__init__.py
 from app.models import User, Expense  # Import models from models/__init__.py
-from app.forms import LoginForm, SignupForm, ExpenseForm
+from app.forms import LoginForm, RegistrationForm, ExpenseForm  # Update the import here
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint
 
 # Define the main blueprint
@@ -23,13 +24,13 @@ def dashboard():
 
 @main.route('/signup', methods=['GET', 'POST'])
 def signup():
-    form = SignupForm()
+    form = RegistrationForm()  # Update the form to RegistrationForm
     if form.validate_on_submit():
         # Check if the username or email already exists
         existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
         if existing_user:
             flash('Username or email already exists. Please choose a different one.', 'warning')
-            return redirect(url_for('signup'))  # Redirect to signup page if user exists
+            return redirect(url_for('main.signup'))  # Redirect to signup page if user exists
 
         # Hash the user's password
         hashed_password = generate_password_hash(form.password.data, method='sha256')
@@ -41,7 +42,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
             flash('Signup successful! You can now log in.', 'success')
-            return redirect(url_for('login'))  # Redirect to login page after successful signup
+            return redirect(url_for('main.login'))  # Redirect to login page after successful signup
         except Exception as e:
             db.session.rollback()
             flash('Error during signup. Please try again.', 'danger')
@@ -113,4 +114,3 @@ def delete_expense(expense_id):
     db.session.commit()
     flash('Expense deleted successfully.', 'success')
     return redirect(url_for('main.dashboard'))
-

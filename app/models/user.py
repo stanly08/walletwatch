@@ -14,3 +14,11 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+    @staticmethod
+    def is_email_available(email):
+        return not User.query.filter_by(email=email).first()
+
+    @staticmethod
+    def is_username_available(username):
+        return not User.query.filter_by(username=username).first()

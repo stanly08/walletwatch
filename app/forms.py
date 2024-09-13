@@ -1,8 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, PasswordField, SubmitField, DateField
 from wtforms.validators import DataRequired, Email, Length, NumberRange, EqualTo, ValidationError
-from app.models import User  # Ensure User is imported from models
+from app.models import User
 from datetime import date
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=5, max=30)])
@@ -37,6 +42,7 @@ class ExpenseForm(FlaskForm):
     def validate_description(self, description):
         if 'miscellaneous' in description.data.lower():
             raise ValidationError('Please provide a more specific description.')
+
 
 
 

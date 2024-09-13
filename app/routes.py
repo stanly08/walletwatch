@@ -43,7 +43,7 @@ def signup():
                 return redirect(url_for('main.signup'))
 
             # Hash the user's password
-            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
 
             # Create a new user with the hashed password
             new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)

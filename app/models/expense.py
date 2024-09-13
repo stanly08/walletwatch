@@ -13,3 +13,4 @@ class Expense(db.Model):
     def __repr__(self):
         return f'<Expense {self.id} - {self.description}>'
 
+

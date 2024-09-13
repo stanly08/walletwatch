@@ -9,7 +9,7 @@ class Config:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     # SQLite database URI pointing to instance/database.db
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{os.path.join(BASE_DIR, "../instance/database.db")}'
+   SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///database.db'
     
     # Disable modification tracking for performance
     SQLALCHEMY_TRACK_MODIFICATIONS = False

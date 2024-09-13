@@ -26,6 +26,7 @@ def dashboard():
 def signup():
     form = RegistrationForm()  # Use RegistrationForm for signup
     if form.validate_on_submit():
+        print("Form validation successful!")
         # Check if the username or email already exists
         existing_user = User.query.filter((User.username == form.username.data) | (User.email == form.email.data)).first()
         if existing_user:

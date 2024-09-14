@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Add a New Expense</h2>
+    <form method="POST" action="{{ url_for('main.add_expense') }}" style="display: flex; flex-direction: column;">
+        {{ form.hidden_tag() }}
+
+        <label for="date" style="margin-bottom: 8px; font-weight: bold;">Date:</label>
+        {{ form.date(class_="form-control", style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;") }}
+
+        <label for="description" style="margin-bottom: 8px; font-weight: bold;">Description:</label>
+        {{ form.description(class_="form-control", style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;") }}
+
+        <label for="amount" style="margin-bottom: 8px; font-weight: bold;">Amount:</label>
+        {{ form.amount(class_="form-control", style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;") }}
+
+        <label for="category" style="margin-bottom: 8px; font-weight: bold;">Category:</label>
+        {{ form.category(class_="form-control", style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;") }}
+
+        <button type="submit" class="btn btn-primary" style="background-color: #007bff; color: #fff;">Add Expense</button>
+    </form>
+</div>
+{% endblock %}

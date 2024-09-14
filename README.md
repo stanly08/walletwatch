@@ -44,7 +44,7 @@ walletwatch/
 │   ├── test_models.py
 │   └── test_forms.py
 │
-├── walletwatch.db
+├── database.db
 ├── requirements.txt
 ├── run.py
 └── .gitignore

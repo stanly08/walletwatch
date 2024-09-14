@@ -22,7 +22,7 @@ def dashboard():
     print(f"User {current_user.username} accessed Dashboard")
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
     form = DeleteForm()  # Create an instance of the form
-    return render_template('dashboard.html', expenses=expenses, form=form)
+    return render_template('dashboard.html', expenses=expenses, form=form, username=current_user.username)
 
 # Route for user signup
 @main.route('/signup', methods=['GET', 'POST'])

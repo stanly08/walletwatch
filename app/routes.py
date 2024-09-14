@@ -92,7 +92,7 @@ def login():
     return render_template('login.html', form=form)
 
 # Route for user logout
-@main.route('/logout')
+@main.route('/logout', methods=['POST'])
 @login_required
 def logout():
     print(f"User {current_user.username} logged out.")

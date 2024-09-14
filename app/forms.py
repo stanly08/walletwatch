@@ -14,6 +14,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    salary = DecimalField('Salary', validators=[DataRequired(), NumberRange(min=0)])  # Add salary field
     submit = SubmitField('Sign Up')
 
     def validate_email(self, email):
@@ -45,6 +46,7 @@ class ExpenseForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     csrf_token = HiddenField()
+
 
 
 

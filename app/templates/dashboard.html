@@ -35,7 +35,7 @@
             <tbody>
                 {% for expense in expenses %}
                 <tr>
-                    <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ expense.date.strftime('%Y-%m-%d') if expense.date else 'N/A' }}</td> <!-- Use conditional formatting -->
                     <td>{{ expense.description }}</td>
                     <td>{{ expense.category }}</td>
                     <td>${{ expense.amount }}</td>

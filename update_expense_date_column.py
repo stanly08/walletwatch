@@ -8,7 +8,7 @@ def update_date_column_type():
     cursor.execute('''
         CREATE TABLE expense_new (
             id INTEGER PRIMARY KEY,
-            date DATE NOT NULL,  # DATE column type
+            date DATE NOT NULL,  -- Define date as DATE
             description VARCHAR(200) NOT NULL,
             amount FLOAT NOT NULL,
             category VARCHAR(50) NOT NULL,
@@ -24,7 +24,7 @@ def update_date_column_type():
                CASE 
                    WHEN LENGTH(date) = 10 THEN date 
                    ELSE NULL 
-               END AS date,  -- Use a basic validation for proper dates
+               END AS date,  -- Check date format
                description, amount, category, user_id
         FROM expense
     ''')
@@ -34,6 +34,13 @@ def update_date_column_type():
 
     # Step 4: Rename the new table to the old table’s name
     cursor.execute('ALTER TABLE expense_new RENAME TO expense')
+
+    conn.commit()
+    conn.close()
+
+if __name__ == '__main__':
+    update_date_column_type()
+
 
     conn.commit()
     conn.close()

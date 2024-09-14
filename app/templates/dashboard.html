@@ -35,21 +35,14 @@
             <tbody>
                 {% for expense in expenses %}
                 <tr>
-                    <td>
-                        {% if expense.date is string %}
-                            {{ "Date is a string: " ~ expense.date }}
-                        {% elif expense.date is defined %}
-                            {{ expense.date.strftime('%Y-%m-%d') }}
-                        {% else %}
-                            {{ "Date not available" }}
-                        {% endif %}
-                    </td>
+                    <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ expense.description }}</td>
                     <td>{{ expense.category }}</td>
                     <td>${{ expense.amount }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_expense', expense_id=expense.id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ url_for('main.delete_expense', expense_id=expense.id) }}" method="POST" style="display: inline;">
+                            {{ form.csrf_token() }}  <!-- Include the CSRF token -->
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>

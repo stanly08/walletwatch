@@ -50,6 +50,45 @@
             display: inline;
             margin-right: 15px;
         }
+        /* Home Button Styling */
+        .home-button {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .home-button:hover {
+            background-color: #218838;
+        }
+        /* General Navigation Button Styling */
+        .nav-button {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        /* Logout Button Styling */
+        .logout-button {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -57,14 +96,14 @@
         <h1>WalletWatch</h1>
         <nav>
             <ul>
-                <li><a href="{{ url_for('main.home') }}">Home</a></li>
+                <li><a class="home-button" href="{{ url_for('main.home') }}">Home</a></li>
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ url_for('main.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                    <li><a class="nav-button" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                    <li><a class="logout-button" href="{{ url_for('main.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                     <form id="logout-form" action="{{ url_for('main.logout') }}" method="POST" style="display: none;"></form>
                 {% else %}
-                    <li><a href="{{ url_for('main.login') }}">Login</a></li>
-                    <li><a href="{{ url_for('main.signup') }}">Signup</a></li>
+                    <li><a class="nav-button" href="{{ url_for('main.login') }}">Login</a></li>
+                    <li><a class="nav-button" href="{{ url_for('main.signup') }}">Signup</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -75,3 +114,5 @@
     </main>
 </body>
 </html>
+
+

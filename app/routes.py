@@ -66,7 +66,10 @@ def login():
                 login_user(user)
                 flash('Logged in successfully.', 'success')
                 print(f"User {user.username} logged in successfully.")
-                
+
+                # Check if the user is authenticated
+                print(f"User is_authenticated: {current_user.is_authenticated}")
+
                 # Redirect to the dashboard
                 return redirect(url_for('main.dashboard'))  # Ensure the dashboard route is correct
 
@@ -79,7 +82,6 @@ def login():
 
     # If the form doesn't validate, or if there's a problem, render the login page
     return render_template('login.html', form=form)
-
 
 # Route for user logout
 @main.route('/logout')

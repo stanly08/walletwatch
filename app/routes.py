@@ -60,25 +60,32 @@ def login():
         # Fetch the user from the database
         user = User.query.filter_by(email=form.email.data).first()
 
+        # Log the form data and user existence
+        print(f"Form submitted: {request.form}")
+        print(f"User found: {user}")
+
         if user:
             # Check if the password matches
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
                 flash('Logged in successfully.', 'success')
                 print(f"User {user.username} logged in successfully.")
-
-                # Check if the user is authenticated
+                
+                # Check the login status
                 print(f"User is_authenticated: {current_user.is_authenticated}")
 
-                # Redirect to the dashboard
-                return redirect(url_for('main.dashboard'))  # Ensure the dashboard route is correct
-
+                # Redirect to the dashboard if login is successful
+                return redirect(url_for('main.dashboard'))
             else:
                 flash('Invalid password. Please try again.', 'danger')
                 print("Invalid password for user:", user.email)
         else:
             flash('No account found with this email.', 'danger')
             print("No user found with email:", form.email.data)
+    else:
+        # Log the form validation failure
+        print("Form validation failed.")
+        print("Form errors:", form.errors)
 
     # If the form doesn't validate, or if there's a problem, render the login page
     return render_template('login.html', form=form)

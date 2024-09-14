@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <h1>Welcome back, {{ current_user.username }}!</h1>
+    <h1>Welcome back, {{ username }}!</h1>
 
     <!-- Statistics Section -->
     <div class="statistics">
@@ -19,6 +19,7 @@
             Add New Expense
         </a>
     </div>
+
     <!-- Display Existing Expenses -->
     {% if expenses %}
     <div style="margin-top: 20px;">
@@ -68,15 +69,5 @@
     {% else %}
     <p>No expenses recorded. Add some to track your spending!</p>
     {% endif %}
-
-    <!-- Logout Form -->
-    <div style="margin-top: 20px;">
-        <form action="{{ url_for('main.logout') }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="btn btn-danger">
-                Logout
-            </button>
-        </form>
-    </div>
 </div>
 {% endblock %}

@@ -47,6 +47,11 @@ class ExpenseForm(FlaskForm):
 class DeleteForm(FlaskForm):
     csrf_token = HiddenField()
 
+class UpdateSalaryForm(FlaskForm):
+    salary = DecimalField('Salary', validators=[DataRequired(), NumberRange(min=0)])
+    submit = SubmitField('Update Salary')
+
+
 
 
 

@@ -72,7 +72,7 @@
     <!-- Logout Form -->
     <div style="margin-top: 20px;">
         <form action="{{ url_for('main.logout') }}" method="POST">
-            {{ csrf_token() }}  <!-- Include the CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-danger">
                 Logout
             </button>

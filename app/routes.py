@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models import User, Expense
-from app.forms import LoginForm, RegistrationForm, ExpenseForm, DeleteForm
+from app.forms import LoginForm, RegistrationForm, ExpenseForm, DeleteForm, UpdateSalaryForm  # Import UpdateSalaryForm
 from flask import Blueprint
 
 # Define the main blueprint
@@ -27,7 +27,7 @@ def dashboard():
     # Calculate statistics
     total_income = sum(expense.amount for expense in expenses if expense.category == 'income')
     total_expenses = sum(expense.amount for expense in expenses if expense.category != 'income')
-    total_balance = current_user.salary + total_income - total_expenses  # Update balance calculation
+    total_balance = (current_user.salary if current_user.salary is not None else 0) + total_income - total_expenses  # Update balance calculation
 
     form = DeleteForm()  # Create an instance of the form
     return render_template(
@@ -68,6 +68,19 @@ def signup():
         else:
             print("Form validation failed.", form.errors)
     return render_template('signup.html', form=form)
+
+# Route for updating salary
+@main.route('/update-salary', methods=['GET', 'POST'])
+@login_required
+def update_salary():
+    form = UpdateSalaryForm()
+    if form.validate_on_submit():
+        current_user.salary = form.salary.data
+        db.session.commit()
+        flash('Salary updated successfully.', 'success')
+        print(f"User {current_user.username} updated their salary.")
+        return redirect(url_for('main.dashboard'))
+    return render_template('update_salary.html', form=form)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -158,5 +171,6 @@ def delete_expense(expense_id):
     flash('Expense deleted successfully.', 'success')
     print(f"User {current_user.username} deleted expense {expense_id}.")
     return redirect(url_for('main.dashboard'))
+
 
 

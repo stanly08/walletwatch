@@ -6,7 +6,7 @@
 <div class="container">
     <h2>Login</h2>
     <form method="POST" action="{{ url_for('main.login') }}" style="display: flex; flex-direction: column;">
-        {{ form.hidden_tag() }}  <!-- CSRF token field -->
+        {{ form.csrf_token() }}  <!-- CSRF token field -->
 
         <label for="email" style="margin-bottom: 8px; font-weight: bold;">Email:</label>
         <input type="email" id="email" name="email" value="{{ form.email.data }}" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">

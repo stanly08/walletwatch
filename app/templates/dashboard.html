@@ -35,7 +35,15 @@
             <tbody>
                 {% for expense in expenses %}
                 <tr>
-                    <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        {% if expense.date is string %}
+                            {{ "Date is a string: " ~ expense.date }}
+                        {% elif expense.date is defined %}
+                            {{ expense.date.strftime('%Y-%m-%d') }}
+                        {% else %}
+                            {{ "Date not available" }}
+                        {% endif %}
+                    </td>
                     <td>{{ expense.description }}</td>
                     <td>{{ expense.category }}</td>
                     <td>${{ expense.amount }}</td>
@@ -56,5 +64,6 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
 

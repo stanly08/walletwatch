@@ -8,12 +8,12 @@
     <form method="POST" action="{{ url_for('main.login') }}" style="display: flex; flex-direction: column;">
         {{ form.hidden_tag() }}  <!-- CSRF token field -->
 
-        <label for="username" style="margin-bottom: 8px; font-weight: bold;">Username:</label>
-        <input type="text" id="username" name="username" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
-
+        <label for="email" style="margin-bottom: 8px; font-weight: bold;">Email:</label>
+        {{ form.email(size=32, class_="form-control") }}
+        
         <label for="password" style="margin-bottom: 8px; font-weight: bold;">Password:</label>
-        <input type="password" id="password" name="password" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
-
+        {{ form.password(class_="form-control") }}
+        
         <button type="submit" style="background-color: #007bff; color: #fff;">Login</button>
     </form>
     <p style="margin-top: 15px; text-align: center;">Don't have an account? <a href="{{ url_for('main.signup') }}">Sign up here</a>.</p>

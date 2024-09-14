@@ -70,7 +70,7 @@ def signup():
                 print("User exists, redirecting to signup.")
                 return redirect(url_for('main.signup'))
             hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
-            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, salary=form.salary.data)
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
             try:
                 db.session.add(new_user)
                 db.session.commit()

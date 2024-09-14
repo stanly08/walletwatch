@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models import User, Expense
-from app.forms import LoginForm, RegistrationForm, ExpenseForm, DeleteForm  # Import DeleteForm
+from app.forms import LoginForm, RegistrationForm, ExpenseForm, DeleteForm
 from flask import Blueprint
 
 # Define the main blueprint
@@ -25,9 +25,9 @@ def dashboard():
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
 
     # Calculate statistics
-    total_balance = sum(expense.amount for expense in expenses)
     total_income = sum(expense.amount for expense in expenses if expense.category == 'income')
     total_expenses = sum(expense.amount for expense in expenses if expense.category != 'income')
+    total_balance = current_user.salary + total_income - total_expenses  # Update balance calculation
 
     form = DeleteForm()  # Create an instance of the form
     return render_template(
@@ -39,7 +39,6 @@ def dashboard():
         total_income=total_income,
         total_expenses=total_expenses
     )
-
 
 # Route for user signup
 @main.route('/signup', methods=['GET', 'POST'])
@@ -55,7 +54,7 @@ def signup():
                 print("User exists, redirecting to signup.")
                 return redirect(url_for('main.signup'))
             hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
-            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, salary=form.salary.data)
             try:
                 db.session.add(new_user)
                 db.session.commit()
@@ -159,4 +158,5 @@ def delete_expense(expense_id):
     flash('Expense deleted successfully.', 'success')
     print(f"User {current_user.username} deleted expense {expense_id}.")
     return redirect(url_for('main.dashboard'))
+
 

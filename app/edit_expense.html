@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Expense{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Expense</h1>
+
+    <!-- Edit Expense Form -->
+    <form method="POST" action="{{ url_for('main.edit_expense', expense_id=expense.id) }}" style="display: flex; flex-direction: column;">
+        {{ form.hidden_tag() }}  <!-- CSRF token field -->
+
+        <label for="date" style="margin-bottom: 8px; font-weight: bold;">Date:</label>
+        <input type="date" id="date" name="date" value="{{ form.date.data }}" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+
+        <label for="description" style="margin-bottom: 8px; font-weight: bold;">Description:</label>
+        <input type="text" id="description" name="description" value="{{ form.description.data }}" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+
+        <label for="category" style="margin-bottom: 8px; font-weight: bold;">Category:</label>
+        <input type="text" id="category" name="category" value="{{ form.category.data }}" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+
+        <label for="amount" style="margin-bottom: 8px; font-weight: bold;">Amount:</label>
+        <input type="number" id="amount" name="amount" value="{{ form.amount.data }}" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+
+        <button type="submit" style="background-color: #007bff; color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer;">Update Expense</button>
+    </form>
+
+    <p style="margin-top: 15px; text-align: center;"><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>
+</div>
+{% endblock %}

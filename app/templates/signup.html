@@ -6,7 +6,7 @@
 <div class="container">
     <h2>Sign Up</h2>
     <form method="POST" action="{{ url_for('main.signup') }}" style="display: flex; flex-direction: column;">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         
         <label for="username" style="margin-bottom: 8px; font-weight: bold;">Username:</label>
         <input type="text" id="username" name="username" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">

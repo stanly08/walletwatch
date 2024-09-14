@@ -35,15 +35,12 @@ def update_date_column_type():
     # Step 4: Rename the new table to the old table’s name
     cursor.execute('ALTER TABLE expense_new RENAME TO expense')
 
+    # Commit the changes
     conn.commit()
+
+    # Close the connection
     conn.close()
 
 if __name__ == '__main__':
     update_date_column_type()
 
-
-    conn.commit()
-    conn.close()
-
-if __name__ == '__main__':
-    update_date_column_type()

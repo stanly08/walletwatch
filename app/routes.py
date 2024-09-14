@@ -52,21 +52,34 @@ def signup():
             print("Form validation failed.", form.errors)
     return render_template('signup.html', form=form)
 
-# Route for user login
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
+        # Fetch the user from the database
         user = User.query.filter_by(email=form.email.data).first()
-        if user and check_password_hash(user.password, form.password.data):
-            login_user(user)
-            flash('Logged in successfully.', 'success')
-            print(f"User {user.username} logged in successfully.")
-            return redirect(url_for('main.dashboard'))
+
+        if user:
+            # Check if the password matches
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash('Logged in successfully.', 'success')
+                print(f"User {user.username} logged in successfully.")
+                
+                # Redirect to the dashboard
+                return redirect(url_for('main.dashboard'))  # Ensure the dashboard route is correct
+
+            else:
+                flash('Invalid password. Please try again.', 'danger')
+                print("Invalid password for user:", user.email)
         else:
-            flash('Login failed. Please check your email and password.', 'danger')
-            print("Login failed.")
+            flash('No account found with this email.', 'danger')
+            print("No user found with email:", form.email.data)
+
+    # If the form doesn't validate, or if there's a problem, render the login page
     return render_template('login.html', form=form)
+
 
 # Route for user logout
 @main.route('/logout')

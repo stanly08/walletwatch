@@ -48,10 +48,12 @@ class FormsTestCase(unittest.TestCase):
 
     # Test for valid RegistrationForm
     def test_valid_registration_form(self):
-        # Create a test request context
-        with self.app.test_request_context():
-            form = RegistrationForm(username='testuser', email='test@example.com', password='password123', confirm_password='password123')
-            self.assertTrue(form.validate())  # Ensure that form validation passes
+    # Create a test request context
+    with self.app.test_request_context():
+        form = RegistrationForm(username='testuser', email='test@example.com', password='password123', confirm_password='password123')
+        if not form.validate():
+            print("Form Errors:", form.errors)  # Print errors for debugging
+        self.assertTrue(form.validate())  # Ensure that form validation passes
 
 if __name__ == '__main__':
     unittest.main()

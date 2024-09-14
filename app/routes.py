@@ -91,14 +91,13 @@ def login():
     # If the form doesn't validate, or if there's a problem, render the login page
     return render_template('login.html', form=form)
 
-# Route for user logout
 @main.route('/logout', methods=['POST'])
 @login_required
 def logout():
     print(f"User {current_user.username} logged out.")
     logout_user()
     flash('You have been logged out.', 'success')
-    return redirect(url_for('main.login'))
+    return redirect(url_for('main.signup'))  # Redirect to the signup page
 
 # Route for adding an expense
 @main.route('/add-expense', methods=['GET', 'POST'])

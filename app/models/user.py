@@ -8,6 +8,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
+    salary = db.Column(db.Float, default=0.0)  # Add this line to store salary
 
     # Define the relationship with the Expense model
     expenses = db.relationship('Expense', backref='user', lazy=True)

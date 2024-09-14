@@ -14,6 +14,7 @@ csrf = CSRFProtect()  # Initialize CSRFProtect
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    
     # Set up logging
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
@@ -48,5 +49,4 @@ def create_app():
         raise  # Re-raise the exception to ensure the app does not start if there is a critical error
 
     return app
-
 

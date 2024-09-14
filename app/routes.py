@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models import User, Expense
-from app.forms import LoginForm, RegistrationForm, ExpenseForm
+from app.forms import LoginForm, RegistrationForm, ExpenseForm, DeleteForm  # Import DeleteForm
 from flask import Blueprint
 
 # Define the main blueprint
@@ -21,7 +21,8 @@ def home():
 def dashboard():
     print(f"User {current_user.username} accessed Dashboard")
     expenses = Expense.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', expenses=expenses)
+    form = DeleteForm()  # Create an instance of the form
+    return render_template('dashboard.html', expenses=expenses, form=form)
 
 # Route for user signup
 @main.route('/signup', methods=['GET', 'POST'])
@@ -142,3 +143,4 @@ def delete_expense(expense_id):
     flash('Expense deleted successfully.', 'success')
     print(f"User {current_user.username} deleted expense {expense_id}.")
     return redirect(url_for('main.dashboard'))
+

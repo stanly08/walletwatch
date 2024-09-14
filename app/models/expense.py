@@ -1,4 +1,5 @@
 from app import db  # Import db from app/__init__.py
+from datetime import datetime
 
 class Expense(db.Model):
     __tablename__ = 'expense'  # Ensure the table name matches the one defined in your migration

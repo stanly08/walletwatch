@@ -3,39 +3,58 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
+<div class="container">
+    <h1>Dashboard</h1>
 
-<!-- Statistics Section -->
-<div>
-    <h2>Total Balance: $...</h2>
-    <h3>Total Income: $...</h3>
-    <h3>Total Expenses: $...</h3>
+    <!-- Statistics Section -->
+    <div class="statistics">
+        <h2>Total Balance: $...</h2>
+        <h3>Total Income: $...</h3>
+        <h3>Total Expenses: $...</h3>
+    </div>
+
+    <!-- Button to Add Expense -->
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('main.add_expense') }}" class="btn btn-primary">Add New Expense</a>
+    </div>
+
+    <!-- Display Existing Expenses -->
+    {% if expenses %}
+    <div style="margin-top: 20px;">
+        <h2>Your Expenses</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ expense.description }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>${{ expense.amount }}</td>
+                    <td>
+                        <a href="{{ url_for('main.edit_expense', expense_id=expense.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ url_for('main.delete_expense', expense_id=expense.id) }}" method="POST" style="display: inline;">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No expenses recorded. Add some to track your spending!</p>
+    {% endif %}
 </div>
-
-<!-- Add Expense Form -->
-<div style="margin-top: 20px;">
-    <h2>Add Expense</h2>
-    <form method="POST" action="{{ url_for('main.add_expense') }}">
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required>
-
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
-
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category" required>
-
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" name="amount" required>
-
-        <button type="submit">Add Expense</button>
-    </form>
-</div>
-
-<!-- Additional Dashboard Content -->
-<!-- Existing expenses, graphs, etc. -->
-
 {% endblock %}
-
 
 

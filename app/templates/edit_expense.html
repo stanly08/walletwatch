@@ -8,7 +8,7 @@
 
     <!-- Edit Expense Form -->
     <form method="POST" action="{{ url_for('main.edit_expense', expense_id=expense.id) }}" style="display: flex; flex-direction: column;">
-        {{ form.hidden_tag() }}  <!-- CSRF token field -->
+        {{ form.csrf_token() }}  <!-- CSRF token field -->
 
         <label for="date" style="margin-bottom: 8px; font-weight: bold;">Date:</label>
         {{ form.date(class="form-control", required=True) }}

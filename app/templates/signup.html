@@ -20,11 +20,12 @@
         <label for="confirm_password" style="margin-bottom: 8px; font-weight: bold;">Confirm Password:</label>
         <input type="password" id="confirm_password" name="confirm_password" required style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
         
-        <button type="submit" style="background-color: #28a745; color: #fff;">Sign Up</button>
+        <button type="submit" style="background-color: #28a745; color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer;">Sign Up</button>
     </form>
     
     <p style="margin-top: 15px; text-align: center;">Already have an account? <a href="{{ url_for('main.login') }}">Log in here</a>.</p>
 </div>
 {% endblock %}
+
 
 

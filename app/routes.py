@@ -128,22 +128,6 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('main.signup'))  # Redirect to the signup page
 
-# Route for adding an expense
-@main.route('/add-expense', methods=['GET', 'POST'])
-@login_required
-def add_expense():
-    form = ExpenseForm()
-    if form.validate_on_submit():
-        new_expense = Expense(date=form.date.data, description=form.description.data, 
-                              amount=form.amount.data, category=form.category.data, 
-                              user_id=current_user.id)
-        db.session.add(new_expense)
-        db.session.commit()
-        flash('Expense added successfully.', 'success')
-        print(f"User {current_user.username} added an expense.")
-        return redirect(url_for('main.dashboard'))
-    return render_template('add_expense.html', form=form)
-
 # Route for editing an expense
 @main.route('/edit-expense/<int:expense_id>', methods=['GET', 'POST'])
 @login_required

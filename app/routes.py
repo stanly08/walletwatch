@@ -123,7 +123,7 @@ def login():
     # If the form doesn't validate, or if there's a problem, render the login page
     return render_template('login.html', form=form)
 
-@main.route('/logout', methods=['POST'])
+@main.route('/logout')
 @login_required
 def logout():
     print(f"User {current_user.username} logged out.")

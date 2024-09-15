@@ -99,7 +99,7 @@
                 <li><a class="home-button" href="{{ url_for('main.home') }}">Home</a></li>
                 {% if current_user.is_authenticated %}
                     <li><a class="nav-button" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                    <li><a class="logout-button" href="{{ url_for('main.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                    <li><a class="logout-button" href="{{ url_for('main.logout') }}">Logout</a></li>
                     <form id="logout-form" action="{{ url_for('main.logout') }}" method="POST" style="display: none;"></form>
                 {% else %}
                     <li><a class="nav-button" href="{{ url_for('main.login') }}">Login</a></li>

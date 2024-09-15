@@ -10,8 +10,8 @@
     
     <!-- Call to Action Buttons -->
     <div style="margin-top: 30px;">
-        <a href="{{ url_for('main.signup') }}" class="btn btn-success">Sign Up</a>
-        <a href="{{ url_for('main.login') }}" class="btn btn-primary" style="margin-left: 20px;">Login</a>
+        <a href="{{ url_for('main.signup') }}" style="text-decoration: none; padding: 10px 20px; background-color: #4CAF50; color: white; font-size: 16px; border-radius: 5px;">Sign Up</a>
+        <a href="{{ url_for('main.login') }}" style="text-decoration: none; padding: 10px 20px; background-color: #008CBA; color: white; font-size: 16px; border-radius: 5px; margin-left: 20px;">Login</a>
     </div>
 </div>
 
@@ -36,8 +36,11 @@
 </div>
 
 <!-- Footer Section -->
-<footer style="text-align: center; margin-top: 50px; padding: 10px 0; background-color: #f8f9fa;">
-    <p>&copy; 2024 WalletWatch.</p>
-    <p>All Rights Reserved.</p>
-</footer>
+<div>
+    <footer style="text-align: center; margin-top: 50px;">
+        <p>&copy; 2024 WalletWatch.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+</div>
 {% endblock %}
+

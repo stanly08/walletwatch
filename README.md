@@ -50,4 +50,9 @@ walletwatch/
 └── .gitignore
 
 
+```
 
+TEAM:
+1. Daniel Muumbi
+2. Gloria Kaloli
+3. Stanly Anasi

@@ -24,5 +24,5 @@ pytest==8.3.2
 SQLAlchemy==2.0.34
 tomli==2.0.1
 typing_extensions==4.12.2
-Werkzeug==3.0.4
-WTForms==3.1.2
+Werkzeug==2.2.3
+
